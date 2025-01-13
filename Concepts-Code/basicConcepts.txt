@@ -1,0 +1,371 @@
+------------------------------- Getting Started with Vue --------------------------------
+----------------------------------------------------------------------------------------------------------------------
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer></script>
+
+
+
+-------------------------------- Vue App Instantiation --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+const app = new Vue({});
+
+
+
+-------------------------------- Attaching Vue Instances --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<div id="app"></div>
+
+const app = new Vue({ el: '#app' });
+
+
+
+-------------------------------- Data --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+const app = new Vue({
+  el: '#app',
+  data: {
+    language: 'Spanish',
+    hoursStudied: 274
+  }
+});
+
+<div id="app">
+  <p>You have been studying {{ language }} for {{ hoursStudied }} hours</p>
+</div>
+
+
+
+-------------------------------- Computed Properties --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+const app = new Vue({
+  el: '#app',
+  data: {
+    hoursStudied: 274
+  },
+  computed: {
+    languageLevel: function() {
+      if (this.hoursStudied < 100) {
+        return 'Beginner';
+      } else if (this.hoursStudied < 1000) {
+        return 'Intermediate';
+      } else {
+        return 'Expert';
+      }
+    }
+  }
+});
+
+<div id="app">
+  <p>You have studied for {{ hoursStudied }} hours. You have {{ languageLevel }}-level mastery.</p>
+</div>
+
+
+
+-------------------------------- Computed Property Setters --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+const app = new Vue({
+  el: '#app',
+  data: {
+    hoursStudied: 274
+  },
+  computed: {
+    languageLevel: {
+      get: function() {
+        if (this.hoursStudied < 100) {
+          return 'Beginner';
+        } else if (this.hoursStudied < 1000) {
+          return 'Intermediate';
+        } else {
+          return 'Expert';
+        }
+      },
+      set: function(newLanguageLevel) {
+        if (newLanguageLevel === 'Beginner') {
+          this.hoursStudied = 0;
+        } else if (newLanguageLevel === 'Intermediate') {
+          this.hoursStudied = 100;
+        } else if (newLanguageLevel === 'Expert') {
+          this.hoursStudied = 1000;
+        }
+      }
+    }
+  }
+});
+
+<div id=“app”>
+  <p>You have studied for {{ hoursStudied }} hours. You have {{ languageLevel }}-level mastery.</p>
+  <span>Change Level:</span>
+  <select v-model="languageLevel">
+    <option>Beginner</option>
+    <option>Intermediate</option>
+    <option>Expert</option>
+  </select>
+</div>
+
+
+
+-------------------------------- Watchers --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+const app = new Vue({
+  el: '#app',
+  data: {
+    currentLanguage: 'Spanish',
+    supportedLanguages: ['Spanish', 'Italian', 'Arabic'],
+    hoursStudied: 274
+  },
+  watch: {
+    currentLanguage: function (newCurrentLanguage, oldCurrentLanguage) {
+      if (supportedLanguages.includes(newCurrentLanguage)) {
+        this.hoursStudied = 0;
+      } else {
+        this.currentLanguage = oldCurrentLanguage;
+      }
+    }
+  }
+});
+
+
+
+-------------------------------- Instance Methods --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+const app = new Vue({
+  el: "#app",
+  data: {
+    hoursStudied: 300
+  },
+  methods: {
+    resetProgress: function () {
+      this.hoursStudied = 0;
+    }
+  }
+});
+
+<button v-on:click="resetProgress">Reset Progress</button>
+
+
+
+-------------------------------- Text, Textarea, and Select Bindings --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<input type="text" v-model="username" />
+
+const app = new Vue({ 
+  el: '#app',
+  data: { username: 'Michael' } 
+});
+
+
+
+-------------------------------- Radio Button bindings --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<legend>How was your experience?</legend>
+
+<input type="radio" id="goodReview" value="good" v-model="experienceReview" />
+<label for="goodReview">Good</label>
+
+<input type="radio" id="neutralReview" value="neutral" v-model="experienceReview" />
+<label for="neutralReview">Neutral</label>
+
+<input type="radio" id="badReview" value="bad" v-model="experienceReview" />
+<label for="badReview">Bad</label>
+
+const app = new Vue({ 
+  el: '#app', 
+  data: { experienceReview: '' } 
+});
+
+
+
+-------------------------------- Array Checkbox bindings --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<legend>Which of the following features would you like to see added?</legend>
+
+<input type="checkbox" id="search-bar" value="search" v-model="requestedFeatures">
+<label for="search-bar">Search Bar</label>
+
+<input type="checkbox" id="ads" value="ads" v-model="requestedFeatures">
+<label for="ads">Ads</label>
+
+<input type="checkbox" id="new-content" value="content" v-model="requestedFeatures">
+<label for="new-content">New Content</label>
+
+const app = new Vue({ 
+  el: '#app', 
+  data: { requestedFeatures: [] } 
+});
+
+
+
+-------------------------------- Boolean Checkbox bindings --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<legend>Would you recommend this site to a friend?</legend>
+<input type="checkbox" v-model="wouldRecommend" />
+
+const app = new Vue({ 
+  el: '#app',
+  data: { wouldRecommend: false } 
+});
+
+
+
+
+-------------------------------- Form Event Handlers --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<form v-on:reset="resetForm">
+  ...
+  <button type="reset">Reset</button>
+</form>
+
+const app = new Vue({ 
+  el: '#app', 
+  methods: { resetForm: function() { ... } }
+});
+
+--- OR we can use @ instead v-on: ---
+
+<form @reset="resetForm">
+  ...
+</form>
+
+
+
+-------------------------------- Form Event Modifiers --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<form v-on:submit.prevent="submitForm">
+  ...
+</form>
+
+Event objects have built-in methods to modify this behavior, such as Event.preventDefault() (which stops the browser from performing its default event handling behavior) 
+and Event.stopPropagation() (which stops the event from continuing to be handled beyond the current handler).
+
+-------------------------------- Input Modifiers --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+Vue offers the following three modifiers for v-model:
+
+.number — automatically converts the value in the form field to a number
+.trim — removes whitespace from the beginning and ends of the form field value
+.lazy — only updates data values when change events are triggered (often when a user moves away from the form field rather than after every keystroke)
+
+
+
+-------------------------------- Form Validation --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<button type="submit" v-bind:disabled="!formIsValid">Submit</button>
+
+const app = new Vue({ 
+  el: '#app', 
+  computed: { 
+    formIsValid: function() { ... } 
+  }
+});
+
+
+
+
+-------------------------------- Inline Styles --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<h2 v-bind:style="{ color: breakingNewsColor, 'font-size': breakingNewsFontSize }">Breaking News</h2>
+
+const app = new Vue({ 
+  data: { 
+    breakingNewsColor: 'red',
+    breakingNewsFontSize: '32px'
+  }
+});
+
+
+
+
+-------------------------------- Computed Style Objects--------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<h2 v-bind:style="breakingNewsStyles">Breaking News</h2>
+
+const app = new Vue({ 
+  data: { 
+    breakingNewsStyles: { 
+      color: 'red',
+      'font-size': '32px'
+    }
+  }
+});
+
+
+
+-------------------------------- Multiple Styles Objects --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+const app = new Vue({ 
+  data: {
+    newsHeaderStyles: { 
+      'font-weight': 'bold', 
+      color: 'grey'
+    },
+    breakingNewsStyles: { 
+      color: 'red'
+    }
+  }
+});
+
+<h2 v-bind:style="[newsHeaderStyles, breakingNewsStyles]">Breaking News</h2>
+
+
+
+-------------------------------- Classes --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<span v-bind:class="{ unread: hasNotifications }">Notifications</span>
+
+.unread {
+  background-color: blue;
+}
+
+const app = new Vue({
+  data: { notifications: [ ... ] },
+  computed: {
+    hasNotifications: function() {
+      return notifications.length > 0;
+    }
+  }
+}
+
+
+
+-------------------------------- Class Arrays --------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+<span v-bind:class="[{ unread: hasNotifications }, menuItemClass]">Notifications</span>
+
+const app = new Vue({
+  data: { 
+    notifications: [ ... ],
+    menuItemClass: 'menu-item'
+  },
+  computed: {
+    hasNotifications: function() {
+      return notifications.length > 0;
+    }
+  }
+}
+
+.menu-item {
+  font-size: 12px;
+}
+.unread {
+  background-color: blue;
+}
