@@ -1,0 +1,106 @@
+--- Getting Started with Vue ---
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer></script>
+
+
+
+--- Vue App Installation ---
+
+const app = new Vue({});
+
+
+
+--- Attaching Vue Instances ---
+
+<div id="app"></div>
+
+const app = new Vue({ el: '#app' });
+
+
+
+--- Data ---
+
+const app = new Vue({
+  el: '#app',
+  data: {
+    language: 'Spanish',
+    hoursStudied: 274
+  }
+});
+
+
+<div id="app">
+  <p>You have been studying {{ language }} for {{ hoursStudied }} hours</p>
+</div>
+
+
+
+--- Computed Properties ---
+
+const app = new Vue({
+  el: '#app',
+  data: {
+    hoursStudied: 274
+  },
+  computed: {
+    languageLevel: function() {
+      if (this.hoursStudied < 100) {
+        return 'Beginner';
+      } else if (this.hoursStudied < 1000) {
+        return 'Intermediate';
+      } else {
+        return 'Expert';
+      }
+    }
+  }
+});
+
+<div id="app">
+  <p>You have studied for {{ hoursStudied }} hours. You have {{ languageLevel }}-level mastery.</p>
+</div>
+
+
+
+--- Computed Property Setters ---
+
+const app = new Vue({
+  el: '#app',
+  data: {
+    hoursStudied: 274
+  },
+  computed: {
+    languageLevel: {
+      get: function() {
+        if (this.hoursStudied < 100) {
+          return 'Beginner';
+        } else if (this.hoursStudied < 1000) {
+          return 'Intermediate';
+        } else {
+          return 'Expert';
+        }
+      },
+      set: function(newLanguageLevel) {
+        if (newLanguageLevel === 'Beginner') {
+          this.hoursStudied = 0;
+        } else if (newLanguageLevel === 'Intermediate') {
+          this.hoursStudied = 100;
+        } else if (newLanguageLevel === 'Expert') {
+          this.hoursStudied = 1000;
+        }
+      }
+    }
+  }
+});
+
+<div id=“app”>
+  <p>You have studied for {{ hoursStudied }} hours. You have {{ languageLevel }}-level mastery.</p>
+  <span>Change Level:</span>
+  <select v-model="languageLevel">
+    <option>Beginner</option>
+    <option>Intermediate</option>
+    <option>Expert</option>
+  </select>
+</div>
+
+
+
